@@ -24,6 +24,10 @@ mkdir -p /work/<NETID>/slurm/logs
 
 最小资源请求应包含 `--partition`、`--gres`、`--mem`、`--time`、`--chdir`、`--output` 和 `--error`。以 `sinfo` 显示的 GPU 类型和数量为准，不要照搬旧的 GRES 名称。
 
+`--gres` 指定类型和数量：原版示例为 `gpu:l20:N`、`gpu:h20:N` 与 `gpu:a40:N`。`Requested node configuration not available` 通常表示 GRES 类型或数量超过节点配置。
+
+交互调试使用 `srun --partition=l20-gpu --gres=gpu:l20:1 --time=01:00:00 --pty bash -l`；长训使用 `sbatch`。双模式脚本可在无 `SLURM_JOB_ID` 时 `sbatch "$0" "$@"`，有该变量时执行计算节点逻辑。原版还支持 `#SBATCH --array=0-9` 与 `--dependency=afterok:<JOBID>` 分段续跑。
+
 ### 共享 GPU 抢占
 
 `l20-gpu`、`h20-gpu` 和 `common-gpu` 的抢占策略可能导致无依赖批量长作业互相抢占，表现为 DDP 进程集体 `SIGKILL` / exit code `-9`。先核验当前设置：

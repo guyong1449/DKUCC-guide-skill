@@ -17,6 +17,8 @@ sinfo -s
 
 `sinfo` 可见分区不等于账号有权限；提交前另用 `sacctmgr show assoc` 检查。
 
+DKUCC 分为登录节点、Slurm 调度层和 CPU/GPU 计算节点。数据不会随作业自动保留；计算节点本地临时盘上的唯一 checkpoint 会随作业结束而丢失。
+
 ### 路径规划
 
 | 位置 | 用途 |

@@ -7,30 +7,26 @@ description: Maintain and check DKUCC /work data that may be subject to retentio
 
 `/work` 通常无备份。关于“约 75 天未访问清理”的说法不是固定承诺；先查 Duke OIT / DKUCC 的当前政策，并为重要数据保留站外副本。
 
-### 手动保活
+### 一次性保活
 
-TB 级目录可能运行数小时，建议在 `tmux` 中执行：
-
-```bash
-NETID=$(whoami)
-nice find "/work/${NETID}" -type f -exec touch {} +
-```
-
-### 部署定期任务
-
-本技能包在 `scripts/touch_work_timestamps.sh` 中附带经过审查的脚本。将 `<SKILL_DIR>` 替换为本技能安装目录；不要在 cron 中拼临时命令：
+原版的命令如下。大目录会运行较久，应在登录节点执行：
 
 ```bash
-mkdir -p ~/bin ~/logs
-install -m 700 <SKILL_DIR>/scripts/touch_work_timestamps.sh ~/bin/touch_work_timestamps.sh
-~/bin/touch_work_timestamps.sh
-tail -n 50 ~/logs/touch_work.log
+find /work/<NETID> -type f -print0 | xargs -0 touch
 ```
 
-确认手动执行成功后，再通过 `crontab -e` 加入：
+### cron 与训练内保活
+
+先运行 `crontab -e`，再按自己的路径加入原版的每 30 天任务：
+
+```bash
+crontab -e
+```
 
 ```cron
-0 3 1,15 * * $HOME/bin/touch_work_timestamps.sh >> $HOME/logs/touch_work.cron.log 2>&1
+0 2 */30 * * find /work/<NETID> -type f -print0 2>/dev/null | xargs -0 -r touch >> /work/<NETID>/slurm/touch.log 2>&1
 ```
+
+长训可在脚本中启动 30 天一次的后台 touch，训练结束后 `kill $TOUCH_PID`。检查最旧文件时使用 `find /work/<NETID> -type f -printf '%T@\n' | sort -n | head -1`；若接近你所知的保留窗口，立即 touch 并检查 cron。
 
 `touch` 只能缓解保留风险，不替代备份，也不能延长 Slurm 的作业时限。
