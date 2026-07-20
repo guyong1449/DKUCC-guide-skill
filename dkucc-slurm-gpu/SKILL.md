@@ -26,6 +26,10 @@ mkdir -p /work/<NETID>/slurm/logs
 
 `--gres` 指定类型和数量：原版示例为 `gpu:l20:N`、`gpu:h20:N` 与 `gpu:a40:N`。`Requested node configuration not available` 通常表示 GRES 类型或数量超过节点配置。
 
+原版将 `common-gpu` 的例子写作 `gpu:a40:N`，即 A40。原版未出现 `g20-gpu`；若用户提到“g20”，先用 `sinfo` / `scontrol` 核验是否实际指 `h20-gpu`，不要猜测。A40 是 48 GB GDDR6 ECC 的 Ampere GPU；L20 是 48 GB 档 Ada GPU；H20 有 96 GB 型号。卡的产品规格不等于当前分区可用资源，实际选择以前述命令和 `nvidia-smi` 为准。
+
+checkpoint 是训练可恢复快照，至少应包含模型权重、优化器状态和训练进度。计算节点本地盘可能随作业结束而清空；将数据、训练输出和 checkpoint 分别放在 `/work/<NETID>/data/` 与 `/work/<NETID>/outputs/` 等持久目录，才能在抢占、超时或重启后续训。
+
 交互调试使用 `srun --partition=l20-gpu --gres=gpu:l20:1 --time=01:00:00 --pty bash -l`；长训使用 `sbatch`。双模式脚本可在无 `SLURM_JOB_ID` 时 `sbatch "$0" "$@"`，有该变量时执行计算节点逻辑。原版还支持 `#SBATCH --array=0-9` 与 `--dependency=afterok:<JOBID>` 分段续跑。
 
 ### 共享 GPU 抢占
