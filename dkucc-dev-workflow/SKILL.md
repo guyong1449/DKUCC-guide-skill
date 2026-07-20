@@ -18,9 +18,11 @@ Git 仓库建议放在 `/work/<NETID>/repos/`。在登录节点执行 `git pull`
 
 Remote SSH 前先验证普通 `ssh dkucc`。如果 Cursor 或 VS Code 的远端服务器下载需要代理、出现 localhost connection refused，或发生远端安装失败，转用 `dkucc-clash-forwarding`；不要把代理桥接配置混入 SSH 基础配置。
 
-### VS Code Remote-SSH 的下载边界
+### VS Code Remote-SSH 与 CodeServer
 
-桌面版 VS Code 客户端安装在本机，SSH 不会把它下载到集群。首次 Remote-SSH 连接会在远端安装或更新 VS Code Server；默认由远端通过 HTTPS 下载，失败时可由本机下载后通过 SSH 传输。若 DKUCC 的受保护官网页面或管理员规则禁止在集群下载该组件，不要手动安装桌面版 VS Code、下载不明二进制或修改系统配置；联系管理员确认批准的部署方式。机制参考 VS Code 官方 Remote-SSH 文档。
+官网允许 VS Code 连接登录节点，用于排查代码和管理脚本，但禁止借此在登录节点或通过 `common`、`scavenger` 分区连接的计算节点上执行高强度计算。需要运行代码时，进入 OnDemand 并使用 CodeServer，让 Slurm 分配交互式资源。
+
+桌面版 VS Code 客户端安装在本机。Remote-SSH 可能在远端安装或更新 VS Code Server，但官网缓存没有写“禁止下载 VS Code”，也没有明确禁止该服务器组件。不要把 Remote-SSH 的下载机制推导为集群政策；组件安装受阻时联系 DKUCC 支持，不要手动安装桌面版 VS Code 或修改系统配置。
 
 ### skills 同步
 

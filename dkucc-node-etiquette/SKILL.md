@@ -7,6 +7,8 @@ description: Decide whether a DKUCC task belongs on the login node or a Slurm-al
 
 登录节点可用于编辑、Git、轻量测试，以及 `sbatch`、`squeue`、`scancel`、`sacct`。不要在登录节点跑训练、长期 CPU 密集操作、大型压缩或 GPU 服务。
 
+官网允许通过 VS Code 连接登录节点做代码排错和脚本管理，但不允许借此执行高强度计算。需要 VS Code 风格的交互计算环境时，进入 OnDemand 并使用 CodeServer，让 Slurm 分配资源。
+
 GPU 和长训练必须由 Slurm 分配计算节点。快速判断当前位置：
 
 ```bash

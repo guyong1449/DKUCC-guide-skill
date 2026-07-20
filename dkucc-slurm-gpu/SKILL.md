@@ -28,6 +28,8 @@ mkdir -p /work/<NETID>/slurm/logs
 
 原版将 `common-gpu` 的例子写作 `gpu:a40:N`，即 A40。原版未出现 `g20-gpu`；若用户提到“g20”，先用 `sinfo` / `scontrol` 核验是否实际指 `h20-gpu`，不要猜测。A40 是 48 GB GDDR6 ECC 的 Ampere GPU；L20 是 48 GB 档 Ada GPU；H20 有 96 GB 型号。卡的产品规格不等于当前分区可用资源，实际选择以前述命令和 `nvidia-smi` 为准。
 
+2026-07-20 的官网首页快照列出教学资源为 RTX 4090 与 L20，学习和研究资源为 A40 与 L20，没有列出 H20；同日登录节点的 Slurm 快照可见 `h20-gpu`。官网资源摘要与实时分区属于不同层次，申请时以 Slurm 输出和账号 association 为准。
+
 checkpoint 是训练可恢复快照，至少应包含模型权重、优化器状态和训练进度。计算节点本地盘可能随作业结束而清空；将数据、训练输出和 checkpoint 分别放在 `/work/<NETID>/data/` 与 `/work/<NETID>/outputs/` 等持久目录，才能在抢占、超时或重启后续训。
 
 交互调试使用 `srun --partition=l20-gpu --gres=gpu:l20:1 --time=01:00:00 --pty bash -l`；长训使用 `sbatch`。双模式脚本可在无 `SLURM_JOB_ID` 时 `sbatch "$0" "$@"`，有该变量时执行计算节点逻辑。原版还支持 `#SBATCH --array=0-9` 与 `--dependency=afterok:<JOBID>` 分段续跑。

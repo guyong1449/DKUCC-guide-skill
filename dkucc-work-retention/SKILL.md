@@ -5,28 +5,60 @@ description: Maintain and check DKUCC /work data that may be subject to retentio
 
 ## DKUCC `/work` 数据保留
 
-`/work` 通常无备份。关于“约 75 天未访问清理”的说法不是固定承诺；先查 Duke OIT / DKUCC 的当前政策，并为重要数据保留站外副本。
+2026-07-20 的官网 `Working with files` 快照明确写明：`/work` 无备份，超过 75 天的文件会自动清理。页面没有说明清理依据是访问时间还是修改时间，也没有承诺恢复窗口，因此先查当期政策，并为重要数据保留站外副本。
 
 ### 一次性保活
 
-原版的命令如下。大目录会运行较久，应在登录节点执行：
+原版使用以下命令。大目录会产生较重 I/O，不要直接在登录节点扫描整个 `/work/<NETID>`；将路径限制为需要保留的目录，并通过 Slurm CPU allocation 执行：
 
 ```bash
-find /work/<NETID> -type f -print0 | xargs -0 touch
+srun --partition=common --time=04:00:00 --mem=2G --cpus-per-task=1 \
+  bash -lc 'find /work/<NETID>/data /work/<NETID>/outputs -type f -print0 | xargs -0 -r touch'
 ```
 
-### cron 与训练内保活
+### cron 自动提交
 
-先运行 `crontab -e`，再按自己的路径加入原版的每 30 天任务：
+不要使用原版的 `0 2 */30 * *`；cron 日期字段中的 `*/30` 不是固定每 30 天。创建 `/work/<NETID>/slurm/touch-work.sh`：
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=touch-work
+#SBATCH --partition=common
+#SBATCH --time=04:00:00
+#SBATCH --mem=2G
+#SBATCH --cpus-per-task=1
+#SBATCH --output=/work/<NETID>/slurm/logs/touch-work-%j.out
+#SBATCH --error=/work/<NETID>/slurm/logs/touch-work-%j.err
+
+set -euo pipefail
+find /work/<NETID>/data /work/<NETID>/outputs -type f -print0 2>/dev/null | xargs -0 -r touch
+```
+
+先创建日志目录，再验证作业脚本：
+
+```bash
+mkdir -p /work/<NETID>/slurm/logs
+sbatch /work/<NETID>/slurm/touch-work.sh
+```
+
+确认作业成功后再运行 `crontab -e`，加入下列规则：
 
 ```bash
 crontab -e
 ```
 
 ```cron
-0 2 */30 * * find /work/<NETID> -type f -print0 2>/dev/null | xargs -0 -r touch >> /work/<NETID>/slurm/touch.log 2>&1
+0 2 1 * * /usr/bin/sbatch /work/<NETID>/slurm/touch-work.sh >> /work/<NETID>/slurm/touch-submit.log 2>&1
 ```
 
-长训可在脚本中启动 30 天一次的后台 touch，训练结束后 `kill $TOUCH_PID`。检查最旧文件时使用 `find /work/<NETID> -type f -printf '%T@\n' | sort -n | head -1`；若接近你所知的保留窗口，立即 touch 并检查 cron。
+该表达式表示每月 1 日 02:00，由 cron 提交作业，实际扫描在 Slurm CPU 节点运行。检查最旧文件也应限制路径，并放到 CPU allocation 中：
 
-`touch` 只能缓解保留风险，不替代备份，也不能延长 Slurm 的作业时限。
+```bash
+srun --partition=common --time=01:00:00 --mem=2G --cpus-per-task=1 bash -lc '
+  find /work/<NETID>/data /work/<NETID>/outputs -type f -printf "%T@\n" 2>/dev/null | sort -n | head -1
+'
+```
+
+若最旧时间接近保留窗口，先确认备份和当期政策，再运行已验证的保活作业。
+
+`touch` 是原版 skill 的保活办法，但官网没有承诺它一定能阻止清理。它不替代备份，也不能延长 Slurm 的作业时限。

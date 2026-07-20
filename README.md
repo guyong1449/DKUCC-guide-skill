@@ -4,6 +4,7 @@
 
 | 技能 | 适用场景 |
 |---|---|
+| `dkucc-official-portal` | 官网导航、本地 HTML 快照与政策表述核验 |
 | `dkucc-ssh-bootstrap` | Windows/macOS 首次安装和配置 SSH |
 | `dkucc-cluster-onboarding` | 首次登录、目录规划、存储自检 |
 | `dkucc-ssh-ldap-auth` | 公钥、LDAP 和免密登录失败 |
@@ -13,7 +14,7 @@
 | `dkucc-nfs4-acl-collaboration` | NFSv4 ACL 协作、070 和坏 ACL |
 | `dkucc-dev-workflow` | Conda、Git、Cursor/VS Code 远程开发 |
 
-源材料：`guyong1449/skills@c1eb114`；集群策略以 Duke IT / DKUCC 管理员的当期说明为准。
+源材料：`guyong1449/skills@c1eb114` 与 2026-07-20 保存的 DKUCC 官网 HTML 快照；集群策略以在线官网及 Duke IT / DKUCC 管理员的当期说明为准。
 
 ## 外部交叉引用
 
