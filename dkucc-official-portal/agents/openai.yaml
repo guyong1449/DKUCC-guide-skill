@@ -1,4 +1,0 @@
-interface:
-  display_name: "DKUCC Official Portal"
-  short_description: "Navigate and verify official DKUCC documentation"
-  default_prompt: "Use $dkucc-official-portal to locate and verify official DKUCC guidance."
