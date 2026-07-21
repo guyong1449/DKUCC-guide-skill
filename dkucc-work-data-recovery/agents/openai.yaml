@@ -1,0 +1,4 @@
+interface:
+  display_name: "DKUCC Work Data Recovery"
+  short_description: "Restore /work data from NFS snapshots via rsync"
+  default_prompt: "Help me recover missing files under /work using NFS .snapshot and rsync. Confirm path, list snapshots, pick pre-delete snap, rsync (not cp -a), verify, then touch. If no snap, prepare IT ticket evidence."
