@@ -11,7 +11,9 @@
 | `dkucc-node-etiquette` | 判断登录节点与计算节点职责 |
 | `dkucc-slurm-gpu` | GPU 作业、抢占、SIGKILL 和 checkpoint |
 | `dkucc-work-retention` | `/work` 保留风险、保活和检查 |
-| `dkucc-nfs4-acl-collaboration` | NFSv4 ACL 协作、070 和坏 ACL |
+| `dkucc-nfs4-acl-collaboration` | NFSv4 ACL 协作、070 和坏 ACL（指南内拆分版） |
+| `nfs4-acl` | `/work` NFSv4 ACL 授权、070 修复、OWNER@ 继承（自 `guyong1449/skills` 完整同步） |
+| `dkucc-permission-audit` | 只读审计 home/`/work` 自然权限（自 `guyong1449/skills` 完整同步） |
 | `dkucc-dev-workflow` | Conda、Git、Cursor/VS Code 远程开发 |
 
 源材料：`guyong1449/skills@c1eb114` 与 2026-07-20 保存的 DKUCC 官网 HTML 快照；集群策略以在线官网及 Duke IT / DKUCC 管理员的当期说明为准。

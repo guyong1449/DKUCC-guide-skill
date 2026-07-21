@@ -1,0 +1,4 @@
+interface:
+  display_name: "DKUCC Permission Audit"
+  short_description: "Audit DKUCC home/work natural POSIX and NFS4 ACLs"
+  default_prompt: "Audit my natural permissions on /dkucc/home and /work: identity, umask, directory ACLs, and a new-file probe. Summarize effective access for OWNER/GROUP/EVERYONE."
