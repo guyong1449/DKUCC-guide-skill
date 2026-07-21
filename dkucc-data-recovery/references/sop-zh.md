@@ -23,7 +23,7 @@
 ## 脚本
 
 ```bash
-SKILL=~/.cc-switch/skills/dkucc-work-data-recovery
+SKILL=~/.cc-switch/skills/dkucc-data-recovery
 bash $SKILL/scripts/list-snapshots.sh
 bash $SKILL/scripts/scan-bash-history.sh --rel <REL>
 bash $SKILL/scripts/restore-from-snapshot.sh --snap <SNAP> --rel <REL>
@@ -51,7 +51,7 @@ grep -F "$TARGET" "$HIST" | grep -viE '\.pth|checkpoint|ckpt' | tail -20
 或：
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/scan-bash-history.sh --rel <REL>
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/scan-bash-history.sh --rel <REL>
 ```
 
 说明：

@@ -3,7 +3,7 @@ name: dkucc-data-ingest
 description: >-
   DKUCC /work keepalive via periodic touch and space checks.
   Use for cron touch and monthly df/du inspection. For snapshot restore after
-  data loss, use dkucc-work-data-recovery (weak reference; do not merge).
+  data loss, use dkucc-data-recovery (weak reference; do not merge).
   Does not include Spectralmae git sync.
 custom: true
 managed_by_ccswitch: true
@@ -13,7 +13,7 @@ managed_by_ccswitch: true
 
 ## Related skills (weak reference — do not merge)
 
-- **dkucc-work-data-recovery** — NFS `.snapshot` + `rsync` restore after purge/delete; IT evidence. This skill only does **prevention** (touch / space check).
+- **dkucc-data-recovery** — NFS `.snapshot` + `rsync` restore after purge/delete; IT evidence. This skill only does **prevention** (touch / space check).
 
 ## Touch 保活（每月两次）
 

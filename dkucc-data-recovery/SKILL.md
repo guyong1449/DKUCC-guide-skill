@@ -1,5 +1,5 @@
 ---
-name: dkucc-work-data-recovery
+name: dkucc-data-recovery
 description: >-
   Recovers missing or purged data on Duke DKUCC /work (and optionally /dkucc/home)
   from short-lived NFS Isilon snapshots under .snapshot/ using rsync.
@@ -11,7 +11,7 @@ custom: true
 managed_by_ccswitch: true
 ---
 
-# DKUCC Work Data Recovery
+# DKUCC Data Recovery
 
 Recover data from **NFS snapshots** on DKUCC Isilon mounts. Prefer evidence and
 `rsync` over guessing. Every major step: **plan → execute → verify**.
@@ -75,7 +75,7 @@ stat "/work/${NETID}/${REL}"
 Script helper:
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/check-live-path.sh --rel <REL>
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/check-live-path.sh --rel <REL>
 ```
 
 ---
@@ -98,7 +98,7 @@ ls -la /work/$(whoami)/.snapshot/
 **Verify:** At least one snap older than the suspected delete window. If `.snapshot` missing/empty → skip to Part F.
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/list-snapshots.sh
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/list-snapshots.sh
 # optional: --root home
 ```
 
@@ -121,7 +121,7 @@ du -sh "/work/${NETID}/.snapshot/<SNAP_AFTER>/${REL}"
 **Verify:** `SNAP_BEFORE` has expected size/file count; `SNAP_AFTER` empty or collapsed.
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/compare-snapshots.sh \
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/compare-snapshots.sh \
   --rel <REL> --before <SNAP_BEFORE> --after <SNAP_AFTER>
 ```
 
@@ -150,7 +150,7 @@ du -sh "${DEST}"
 **Preferred script:**
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/restore-from-snapshot.sh \
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/restore-from-snapshot.sh \
   --snap <SNAP> \
   --rel <REL>
 # optional: --root home
@@ -177,7 +177,7 @@ nice find "/work/${NETID}/${REL}" -type f -exec touch {} +
 Large trees: run under `tmux` / `nohup`. For **monthly whole-tree touch**, hand off weakly to **dkucc-data-ingest** (do not duplicate cron policy here).
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/touch-after-restore.sh --rel <REL>
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/touch-after-restore.sh --rel <REL>
 ```
 
 **Verify:** File count stable; touch completes without permission errors (ACL issues → **nfs4-acl** / **dkucc-permission-audit**, not this skill).
@@ -220,7 +220,7 @@ grep -F "$TARGET" "$HIST" | grep -viE '\.pth|checkpoint|ckpt' | tail -20
 **Script helper:**
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/scan-bash-history.sh --rel <REL>
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/scan-bash-history.sh --rel <REL>
 ```
 
 **Caveat:** empty `rm` sample supports "no intentional user rm" in a ticket narrative, but:
@@ -230,7 +230,7 @@ bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/scan-bash-history.sh -
 - Filtering `.pth|checkpoint|ckpt` can hide a real delete if the same line also matches those tokens.
 
 ```bash
-bash ~/.cc-switch/skills/dkucc-work-data-recovery/scripts/print-it-evidence.sh \
+bash ~/.cc-switch/skills/dkucc-data-recovery/scripts/print-it-evidence.sh \
   --rel <REL> \
   --size "<human size description>" \
   --window "<delete time window>" \

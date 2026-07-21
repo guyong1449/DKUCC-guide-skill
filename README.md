@@ -7,11 +7,11 @@
 | `nfs4-acl` | `/work` NFSv4 ACL 授权、070 修复、OWNER@ 继承 |
 | `dkucc-permission-audit` | 只读审计 home/`/work` 自然权限 |
 | `dkucc-data-ingest` | `/work` 定期 `touch` 保活与空间巡检（预防被 75 天清理） |
-| `dkucc-work-data-recovery` | `/work`/`home` NFS `.snapshot` 恢复、`bash_history` 排查与 IT 证据 |
+| `dkucc-data-recovery` | `/work`/`home` NFS `.snapshot` 恢复、`bash_history` 排查与 IT 证据 |
 
 弱引用（不合并）：
 
-- 保活 / 巡检 → `dkucc-data-ingest`；丢失后恢复 → `dkucc-work-data-recovery`
+- 保活 / 巡检 → `dkucc-data-ingest`；丢失后恢复 → `dkucc-data-recovery`
 - 总手册 → `dkucc-cluster-guide`（本仓库不收录）
 - 代理转发 → `dkucc-clash-forwarding`（本仓库不收录）
 

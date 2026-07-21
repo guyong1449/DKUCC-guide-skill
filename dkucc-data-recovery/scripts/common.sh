@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared helpers for dkucc-work-data-recovery scripts.
+# Shared helpers for dkucc-data-recovery scripts.
 # shellcheck shell=bash
 
 die() { echo "ERROR: $*" >&2; exit 1; }
