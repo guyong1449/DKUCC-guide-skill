@@ -6,11 +6,12 @@
 |---|---|
 | `nfs4-acl` | `/work` NFSv4 ACL 授权、070 修复、OWNER@ 继承 |
 | `dkucc-permission-audit` | 只读审计 home/`/work` 自然权限 |
+| `dkucc-data-ingest` | `/work` 定期 `touch` 保活与空间巡检（预防被 75 天清理） |
 | `dkucc-work-data-recovery` | `/work`/`home` NFS `.snapshot` 恢复、`bash_history` 排查与 IT 证据 |
 
 弱引用（不合并）：
 
-- 保活 / 定期 `touch` → 仍用 `guyong1449/skills` 中的 `dkucc-data-ingest`（本仓库不收录）
+- 保活 / 巡检 → `dkucc-data-ingest`；丢失后恢复 → `dkucc-work-data-recovery`
 - 总手册 → `dkucc-cluster-guide`（本仓库不收录）
 - 代理转发 → `dkucc-clash-forwarding`（本仓库不收录）
 
@@ -21,6 +22,6 @@
 | 资源 | 何时使用 |
 |---|---|
 | [guyong1449/DKUCC-guide-skill](https://github.com/guyong1449/DKUCC-guide-skill) | 本仓库 |
-| [guyong1449/skills](https://github.com/guyong1449/skills) | 权威完整 skills 根（含 data-ingest / cluster-guide / clash-forwarding） |
+| [guyong1449/skills](https://github.com/guyong1449/skills) | 权威完整 skills 根（含 cluster-guide / clash-forwarding） |
 | [guyong1449/cisco-vpn-autoconnect](https://github.com/guyong1449/cisco-vpn-autoconnect) | Windows DKU VPN |
 | Duke IT / DKUCC 支持 | LDAP 公钥、主机指纹、分区权限 |
